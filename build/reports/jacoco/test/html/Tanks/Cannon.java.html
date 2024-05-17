@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cannon.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tanks_scaffold</a> &gt; <a href="index.source.html" class="el_package">Tanks</a> &gt; <span class="el_source">Cannon.java</span></div><h1>Cannon.java</h1><pre class="source lang-java linenums">package Tanks;
+
+import processing.core.PApplet;
+import processing.core.PVector;
+
+public class Cannon {
+    private float angle;
+    private int height;
+    private int thickness;
+    private static final float ROTATION_SPEED = 3;
+    private static final float MAX_ANGLE = PApplet.PI / 2;
+
+    /**
+     * Constructs a Cannon with specified height and thickness.
+     */
+<span class="fc" id="L16">    public Cannon(int height, int thickness) {</span>
+<span class="fc" id="L17">        this.height = height;</span>
+<span class="fc" id="L18">        this.angle = 0;</span>
+<span class="fc" id="L19">        this.thickness = thickness;</span>
+        // this.app = app;
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * Draws the cannon on the application's canvas.
+     */
+    public void draw(App app, int x, int y) {
+<span class="fc" id="L27">        app.pushMatrix();</span>
+<span class="fc" id="L28">        app.translate(x, y);</span>
+        // app.rotate(app.radians(angle));
+<span class="fc" id="L30">        app.rotate(angle);</span>
+<span class="fc" id="L31">        app.fill(60); // Dark gray color for the cannon</span>
+        // app.rect(0, -thickness / 2, height, thickness);
+<span class="fc" id="L33">        app.rect(-thickness / 2, -height, thickness, height);</span>
+<span class="fc" id="L34">        app.popMatrix();</span>
+<span class="fc" id="L35">    }</span>
+
+    /**
+     * Resets the angle of the cannon to its default position.
+     */
+    public void reset(int x, int y) {
+<span class="fc" id="L41">        this.angle = 0;</span>
+<span class="fc" id="L42">    }</span>
+
+    /**
+     * Decreases the angle of the cannon, simulating rotation upwards.
+     */
+    public void decreaseAngle(float deltaTime) {
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        if (angle &lt; MAX_ANGLE) {</span>
+<span class="fc" id="L49">            angle += ROTATION_SPEED * deltaTime;</span>
+<span class="fc" id="L50">            angle = PApplet.min(angle, MAX_ANGLE);</span>
+<span class="fc" id="L51">            angle = PApplet.max(angle, -MAX_ANGLE); // Ensure angle does not go beyond 90 degrees</span>
+        }
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Increases the angle of the cannon, simulating rotation downwards.
+     */
+    public void increaseAngle(float deltaTime) {
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (angle &gt; -MAX_ANGLE) {</span>
+<span class="fc" id="L60">            angle -= ROTATION_SPEED * deltaTime;</span>
+<span class="fc" id="L61">            angle = PApplet.max(angle, -MAX_ANGLE);</span>
+<span class="fc" id="L62">            angle = PApplet.min(angle, MAX_ANGLE); // Ensure angle does not go beyond -90 degrees</span>
+        }
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * Setter and Getter methods.
+     */
+
+    public PVector getCannonEndPosition() {
+<span class="nc" id="L71">        float xEnd = this.height * PApplet.cos(angle);</span>
+<span class="nc" id="L72">        float yEnd = this.height * PApplet.sin(angle);</span>
+<span class="nc" id="L73">        return new PVector(xEnd, yEnd);</span>
+    }
+
+    public void setAngle(float angle) {
+<span class="nc" id="L77">        this.angle = angle;</span>
+<span class="nc" id="L78">    }</span>
+
+    public float getAngle() {
+<span class="fc" id="L81">        return this.angle;</span>
+    }
+
+    public int getHeight() {
+<span class="fc" id="L85">        return this.height;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

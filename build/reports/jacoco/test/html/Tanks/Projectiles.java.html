@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Projectiles.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tanks_scaffold</a> &gt; <a href="index.source.html" class="el_package">Tanks</a> &gt; <span class="el_source">Projectiles.java</span></div><h1>Projectiles.java</h1><pre class="source lang-java linenums">package Tanks;
+
+import java.util.ArrayList;
+
+import processing.core.PApplet;
+import processing.core.PVector;
+
+public class Projectiles {
+    private PVector position;
+    private PVector velocity;
+<span class="fc" id="L11">    private PVector gravity = new PVector(0, 0.12f); // Gravity applied each frame</span>
+    private float windEffect;
+    private App app;
+    private Tanks shooter;
+
+    // explosion variables
+    private int[][] terrainHeights;
+<span class="fc" id="L18">    public boolean hit = false;</span>
+<span class="fc" id="L19">    private int hitX = 0;</span>
+<span class="fc" id="L20">    private int hitY = 0;</span>
+<span class="fc" id="L21">    private int explosion = 0;</span>
+<span class="fc" id="L22">    private int animationDuration = 6;</span>
+    private boolean animationDone;
+    private ArrayList&lt;Tanks&gt; activeTanks;
+    private int currentLevel;
+
+    /**
+     * Constructs a projectile with initial settings.
+     */
+    public Projectiles(PVector position, float windEffect, Tanks shooter, int[][] terrainHeights,
+            ArrayList&lt;Tanks&gt; tanksInCurrentLevel, int currentLevel,
+<span class="fc" id="L32">            App app) {</span>
+<span class="fc" id="L33">        this.app = app;</span>
+<span class="fc" id="L34">        this.windEffect = windEffect;</span>
+<span class="fc" id="L35">        this.position = new PVector(position.x, position.y);</span>
+<span class="fc" id="L36">        this.terrainHeights = terrainHeights;</span>
+<span class="fc" id="L37">        this.activeTanks = tanksInCurrentLevel;</span>
+<span class="fc" id="L38">        this.currentLevel = currentLevel;</span>
+<span class="fc" id="L39">        this.shooter = shooter;</span>
+<span class="fc" id="L40">        initialPosition(shooter);</span>
+<span class="fc" id="L41">    }</span>
+
+    /**
+     * Initializes the projectile's position and velocity.
+     */
+    public void initialPosition(Tanks tank) {
+<span class="fc" id="L47">        int power = shooter.getPower();</span>
+<span class="fc" id="L48">        float velocityMagnitude = PApplet.map(power, 0, 100, 1, 9);</span>
+<span class="fc" id="L49">        float angle = shooter.getCannon().getAngle();</span>
+<span class="fc" id="L50">        angle = 3 * PApplet.HALF_PI + angle;</span>
+<span class="fc" id="L51">        velocity = PVector.fromAngle(angle).mult(velocityMagnitude);</span>
+<span class="fc" id="L52">        gravity = new PVector(0, 0.12f);</span>
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Checks if the projectile has hit the terrain.
+     */
+    public void checkHitTerrain() {
+
+<span class="fc" id="L60">        int posX = (int) position.x;</span>
+<span class="fc" id="L61">        int posY = (int) position.y;</span>
+
+<span class="pc bpc" id="L63" title="2 of 6 branches missed.">        if (currentLevel &lt; 0 || currentLevel &gt;= terrainHeights.length || isOutOfBounds()) {</span>
+<span class="fc" id="L64">            return;</span>
+        }
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (640 - terrainHeights[currentLevel][posX] &lt;= posY) {</span>
+<span class="fc" id="L68">            hit = true;</span>
+<span class="fc" id="L69">            hitX = posX;</span>
+<span class="fc" id="L70">            hitY = posY;</span>
+        }
+
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Destroys the terrain within a specified radius around the hit location.
+     */
+    public void destroyTerrain(int radius) {
+        int n;
+        boolean fill;
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        for (int i = hitX - radius; i &lt;= hitX + radius; i++) {</span>
+            try {
+<span class="fc" id="L83">                n = 0;</span>
+<span class="fc" id="L84">                fill = false;</span>
+<span class="fc" id="L85">                int originalHeights = 640 - terrainHeights[currentLevel][i];</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">                if (originalHeights &lt; 0) {</span>
+<span class="nc" id="L87">                    originalHeights = 0;</span>
+                }
+<span class="fc" id="L89">                int distance = (int) PApplet.dist(hitX, hitY, i, originalHeights);</span>
+<span class="pc bpc" id="L90" title="2 of 4 branches missed.">                if (i &gt;= 0 &amp;&amp; i &lt; terrainHeights[currentLevel].length) {</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">                    for (int j = hitY - radius; j &lt;= hitY + radius; j++) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">                        if (PApplet.dist(hitX, hitY, i, j) &lt;= radius) {</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">                            if (distance &lt;= radius) {</span>
+<span class="fc" id="L94">                                terrainHeights[currentLevel][i] = 640 - j;</span>
+                            } else {
+<span class="fc bfc" id="L96" title="All 2 branches covered.">                                if (j &lt;= originalHeights) {</span>
+<span class="fc" id="L97">                                    terrainHeights[currentLevel][i] = 640 - originalHeights;</span>
+                                } else {
+<span class="fc" id="L99">                                    fill = true;</span>
+<span class="fc" id="L100">                                    n++;</span>
+                                }
+                            }
+                        }
+                    }
+                }
+<span class="fc bfc" id="L106" title="All 2 branches covered.">                if (fill) {</span>
+<span class="fc" id="L107">                    terrainHeights[currentLevel][i] = 640 - originalHeights - n;</span>
+                }
+<span class="nc" id="L109">            } catch (Exception e) {</span>
+<span class="nc" id="L110">                continue;</span>
+<span class="fc" id="L111">            }</span>
+        }
+<span class="fc" id="L113">    }</span>
+
+    /**
+     * Checks for collisions between the projectile and any tank within the
+     * explosion radius.
+     */
+    public void checkHitTank() {
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        for (Tanks tank : activeTanks) {</span>
+<span class="fc" id="L121">            int distance = (int) PApplet.dist(hitX, hitY, tank.getX() + tank.getWidth() / 2,</span>
+<span class="fc" id="L122">                    tank.getY() + tank.getHeight() / 2);</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">            if (distance &lt;= 30) { // Check if within explosion range</span>
+<span class="fc" id="L124">                int damage = calculateDamage(distance);</span>
+<span class="fc" id="L125">                tank.decreaseHealth(damage);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                if (!tank.equals(shooter)) { // Ensure the shooter doesn't gain points for hitting itself</span>
+<span class="fc" id="L127">                    shooter.increaseScore(damage);</span>
+                }
+<span class="fc bfc" id="L129" title="All 2 branches covered.">                if (damage &gt; 0) {</span>
+                    // If the tank is within the damage range, we assume it's affected by the
+                    // explosion
+<span class="fc" id="L132">                    tank.triggerFallDueToExplosion();</span>
+                }
+            }
+<span class="fc" id="L135">        }</span>
+<span class="fc" id="L136">    }</span>
+
+    /**
+     * Calculates the damage based on the distance from the hit point.
+     */
+    public int calculateDamage(int distance) {
+<span class="fc" id="L142">        int maxDamage = 60;</span>
+<span class="fc" id="L143">        int explosionRadius = 30;</span>
+<span class="fc" id="L144">        return (int) PApplet.map(distance, 0, explosionRadius, maxDamage, 0);</span>
+    }
+
+    /**
+     * Updates the state of the projectile, checking for hits and managing the
+     * explosion animation.
+     */
+    public void update() {
+<span class="fc" id="L152">        checkHitTerrain();</span>
+
+<span class="fc bfc" id="L154" title="All 2 branches covered.">        if (hit) {</span>
+<span class="fc" id="L155">            explosion++;</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">            if (explosion &gt;= animationDuration) {</span>
+<span class="fc" id="L157">                animationDone = true;</span>
+<span class="fc" id="L158">                destroyTerrain(30);</span>
+<span class="fc" id="L159">                checkHitTank();</span>
+            }
+        } else {
+<span class="fc" id="L162">            velocity.add(gravity);</span>
+<span class="fc" id="L163">            position.x += windEffect;</span>
+<span class="fc" id="L164">            position.add(velocity);</span>
+        }
+<span class="fc" id="L166">    }</span>
+
+    /**
+     * Draws the projectile on the canvas.
+     */
+    public void draw(PApplet app) {
+<span class="fc" id="L172">        update();</span>
+
+<span class="fc bfc" id="L174" title="All 2 branches covered.">        if (hit) {</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">            if (explosion &lt; animationDuration) {</span>
+                // Calculate and draw explosion circles
+<span class="fc" id="L177">                float explosionRadius = PApplet.map(explosion, 0, animationDuration, 0, 30); // Red circle</span>
+<span class="fc" id="L178">                float orangeRadius = explosionRadius * 0.5f; // Half the size of the red circle</span>
+<span class="fc" id="L179">                float yellowRadius = explosionRadius * 0.2f; // One fifth the size of the red circle</span>
+
+<span class="fc" id="L181">                app.noFill();</span>
+<span class="fc" id="L182">                app.fill(255, 0, 0); // Red</span>
+<span class="fc" id="L183">                app.ellipse(hitX, hitY, explosionRadius * 2, explosionRadius * 2);</span>
+<span class="fc" id="L184">                app.fill(255, 165, 0); // Orange</span>
+<span class="fc" id="L185">                app.ellipse(hitX, hitY, orangeRadius * 2, orangeRadius * 2);</span>
+<span class="fc" id="L186">                app.fill(255, 255, 0); // Yellow</span>
+<span class="fc" id="L187">                app.ellipse(hitX, hitY, yellowRadius * 2, yellowRadius * 2);</span>
+<span class="fc" id="L188">                explosion++;</span>
+<span class="fc" id="L189">            } else {</span>
+<span class="fc" id="L190">                animationDone = true;</span>
+            }
+        } else {
+            // Draw the projectile if it hasn't hit yet
+<span class="fc" id="L194">            app.stroke(255, 0, 0);</span>
+<span class="fc" id="L195">            app.strokeWeight(1);</span>
+<span class="fc" id="L196">            app.ellipse(position.x, position.y, 6, 6);</span>
+        }
+<span class="fc" id="L198">    }</span>
+
+    /**
+     * Checks if the projectile is out of the app's bounds.
+     */
+    public boolean isOutOfBounds() {
+<span class="pc bpc" id="L204" title="1 of 6 branches missed.">        return position.x &lt; 0 || position.x &gt; app.width || position.y &gt; app.height;</span>
+    }
+
+    /**
+     * Setter and Getter methods.
+     */
+    public PVector getPosition() {
+<span class="nc" id="L211">        return position;</span>
+    }
+
+    public Tanks getShooter() {
+<span class="nc" id="L215">        return shooter;</span>
+    }
+
+    public int getPositionX() {
+<span class="fc" id="L219">        return (int) position.x;</span>
+    }
+
+    public int getPositionY() {
+<span class="fc" id="L223">        return (int) position.y;</span>
+    }
+
+    public boolean getAnimationDone() {
+<span class="fc" id="L227">        return animationDone;</span>
+    }
+
+    public boolean getHit() {
+<span class="fc" id="L231">        return hit;</span>
+    }
+
+    public float getWind() {
+<span class="nc" id="L235">        return windEffect;</span>
+    }
+
+    public void setWind(float effect) {
+<span class="fc" id="L239">        this.windEffect = effect;</span>
+<span class="fc" id="L240">    }</span>
+
+    public int getHitX() {
+<span class="nc" id="L243">        return hitX;</span>
+    }
+
+    public int getHitY() {
+<span class="fc" id="L247">        return hitY;</span>
+    }
+
+    public int[][] getLandPixel() {
+<span class="fc" id="L251">        return terrainHeights;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
