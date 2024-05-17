@@ -8,11 +8,32 @@ public class EmptyTile {
 
     public boolean hit;
 
+    /**
+     * Constructs empty tile with initial settings.
+     */
     public EmptyTile(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Draws the tile at its current position using the specified image.
+     */
+    public void draw(App app, PImage tile) {
+        app.image(tile, x, y);
+    }
+
+    /**
+     * Sets the tile's hit status to true and returns true.
+     */
+    public boolean gotHit() {
+        this.hit = true;
+        return true;
+    }
+
+    /**
+     * Setter and Getter methods.
+     */
     public int getX() {
         return x;
     }
@@ -27,14 +48,5 @@ public class EmptyTile {
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public void draw(App app, PImage tile) {
-        app.image(tile, x, y);
-    }
-
-    public boolean gotHit() {
-        this.hit = true;
-        return true;
     }
 }

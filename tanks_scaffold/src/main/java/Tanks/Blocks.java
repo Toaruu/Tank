@@ -8,11 +8,32 @@ public class Blocks {
 
     public boolean hit;
 
+    /**
+     * Constructs blocks with initial settings.
+     */
     public Blocks(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Draws the block at its current position using the specified image.
+     */
+    public void draw(App app, PImage tile) {
+        app.image(tile, x, y);
+    }
+
+    /**
+     * Sets the block's hit status to true and returns true.
+     */
+    public boolean gotHit() {
+        this.hit = true;
+        return true;
+    }
+
+    /**
+     * Setter and Getter methods.
+     */
     public int getX() {
         return x;
     }
@@ -27,14 +48,5 @@ public class Blocks {
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public void draw(App app, PImage tile) {
-        app.image(tile, x, y);
-    }
-
-    public boolean gotHit() {
-        this.hit = true;
-        return true;
     }
 }
