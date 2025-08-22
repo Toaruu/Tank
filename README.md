@@ -15,7 +15,6 @@ Gradle – Build tool and project management
 JUnit – Testing framework for ensuring code stability
 Git – Version control
 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## Project Structure
 /tanks_scaffold     → Source code (game logic, tank behaviours, interactions)  
 /build/reports      → Build outputs and test reports  
@@ -31,10 +30,8 @@ gradle build #Build project
 
 gradle run # Run game
 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## Run Tests
 gradle test
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Future Improvements
 Add power-ups and advanced weapon mechanics
