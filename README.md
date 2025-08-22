@@ -1,7 +1,6 @@
 # Multiplayer Tanks Game
 
-A multiplayer tank game developed in Java, focusing on object-oriented programming principles, modular design, and robust testing. 
-Players can control tanks, interact with the environment, and engage in multiplayer battles.
+A multiplayer tank game developed in Java, focusing on object-oriented programming principles, modular design, and robust testing. Players can control tanks, interact with the environment, and engage in multiplayer battles.
 
 Features
 Object-Oriented Design: Tanks, projectiles, and interactions are modeled using structured classes and interfaces.
@@ -16,15 +15,13 @@ Gradle – Build tool and project management
 JUnit – Testing framework for ensuring code stability
 Git – Version control
 
-------------------------------------------------------------------------------
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## Project Structure
 /tanks_scaffold     → Source code (game logic, tank behaviours, interactions)  
 /build/reports      → Build outputs and test reports  
 
-Prerequisites
-Install Java 11+
-Install Gradle
-------------------------------------------------------------------------------
+Prerequisites Install Java 11+ Install Gradle
+
 ## Run the Game
 git clone https://github.com/Toaruu/Tank.git # Clone repository
 
@@ -33,10 +30,11 @@ cd Tank # Navigate into project
 gradle build #Build project
 
 gradle run # Run game
-------------------------------------------------------------------------------
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## Run Tests
 gradle test
-------------------------------------------------------------------------------
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Future Improvements
 Add power-ups and advanced weapon mechanics
