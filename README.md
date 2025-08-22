@@ -1,4 +1,4 @@
-**Multiplayer Tanks Game**
+# Multiplayer Tanks Game
 
 A multiplayer tank game developed in Java, focusing on object-oriented programming principles, modular design, and robust testing. 
 Players can control tanks, interact with the environment, and engage in multiplayer battles.
@@ -17,7 +17,7 @@ JUnit – Testing framework for ensuring code stability
 Git – Version control
 
 ------------------------------------------------------------------------------
-Project Structure
+## Project Structure
 /tanks_scaffold     → Source code (game logic, tank behaviours, interactions)  
 /build/reports      → Build outputs and test reports  
 
@@ -25,20 +25,16 @@ Prerequisites
 Install Java 11+
 Install Gradle
 ------------------------------------------------------------------------------
-Run the Game
-# Clone repository
-git clone https://github.com/Toaruu/Tank.git
+## Run the Game
+git clone https://github.com/Toaruu/Tank.git # Clone repository
 
-# Navigate into project
-cd Tank
+cd Tank # Navigate into project
 
-# Build project
-gradle build
+gradle build #Build project
 
-# Run game
-gradle run
+gradle run # Run game
 ------------------------------------------------------------------------------
-Run Tests
+## Run Tests
 gradle test
 ------------------------------------------------------------------------------
 
