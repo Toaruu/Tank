@@ -1,4 +1,5 @@
-Multiplayer Tanks Game
+**Multiplayer Tanks Game**
+
 A multiplayer tank game developed in Java, focusing on object-oriented programming principles, modular design, and robust testing. 
 Players can control tanks, interact with the environment, and engage in multiplayer battles.
 
